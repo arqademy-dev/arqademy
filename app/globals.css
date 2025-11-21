@@ -1,26 +1,32 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+
 @import "tailwindcss";
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Main Colors */
+  --primary-green: #0ECB83;   /* main buttons, highlights */
+  --dark-teal: #003138;       /* dark backgrounds / sections */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--dark-teal);  /* default background */
+  --color-foreground: var(--primary-green); /* default text / highlights */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-background: var(--dark-teal);  /* same dark teal for dark mode */
+    /* --color-foreground: var(--primary-green); */
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  /* color: var(--color-foreground); */
+  font-family: 'Inter', 'Roboto', sans-serif;
+  font-weight: 400; /* normal */
+  font-style: normal;
 }
+
