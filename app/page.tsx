@@ -45,7 +45,7 @@ const HomePage = () => {
                 Get Started
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/20 px-8 py-6 text-lg">
+              <Button size="lg" variant="primary" className="border-2 border-white text-white hover:bg-white/20 px-8 py-6 text-lg">
                 Watch Demo
               </Button>
             </div>
