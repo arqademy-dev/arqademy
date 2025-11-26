@@ -62,7 +62,7 @@ export default function ParentDashboard({ onBack }: ParentDashboardProps) {
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/">
-            <Button onClick={onBack} variant="ghost" size="icon">
+            <Button onClick={onBack} variant="ghost" size="md">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
