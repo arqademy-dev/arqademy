@@ -126,7 +126,7 @@ const HomePage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-          <Link href="/"            
+          <Link href="/student"            
             className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
           >
             <div className="flex flex-col items-center gap-4">
@@ -141,7 +141,7 @@ const HomePage = () => {
           </Link>
 
           <Link
-            href="/"
+            href="/teacher"
             className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
           >
             <div className="flex flex-col items-center gap-4">
@@ -156,7 +156,7 @@ const HomePage = () => {
           </Link>
 
           <Link
-            href="/"
+            href="management"
             className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
           >
             <div className="flex flex-col items-center gap-4">

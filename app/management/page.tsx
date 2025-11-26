@@ -67,8 +67,8 @@ export default function ParentDashboard({ onBack }: ParentDashboardProps) {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-semibold">Parent Dashboard</h1>
-            <p className="text-gray-600">Monitor your student's academic progress</p>
+            <h1 className="text-2xl font-semibold">Management Dashboard</h1>
+            <p className="text-gray-600">Monitor all academic progress</p>
           </div>
         </div>
 
