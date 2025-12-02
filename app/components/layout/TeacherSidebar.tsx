@@ -10,13 +10,7 @@ import Image, { StaticImageData } from 'next/image';
 
 const menu = [
   { icon: Home, label: "Dashboard", href: "/teacher" },
-  { icon: Mic, label: "Record", href: "/teacher/record" },
-  { icon: Upload, label: "Upload", href: "/teacher/upload" },
-  { icon: BookOpen, label: "Curriculum", href: "/teacher/curriculum", badge: "New" },
-  { icon: History, label: "History", href: "/teacher/history" },
-  { icon: BarChart3, label: "Insights", href: "/teacher/insights" },
   { icon: Users, label: "Students", href: "/teacher/students" },
-  { icon: Trophy, label: "Rewards", href: "/teacher/achievements" },
 ];
 
 interface SidebarProps {
@@ -58,9 +52,6 @@ export function TeacherSidebar({ isOpen, onClose }: SidebarProps) {
                   <Icon className="w-5 h-5" />
                   <span>{item.label}</span>
                 </div>
-                {item.badge && (
-                  <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">New</span>
-                )}
               </Link>
             );
           })}
