@@ -25,7 +25,7 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center">
               <Image src={ Logo } alt="ARQADEMY" width={40} height={40} />
             </div>
-            <h1 className="uppercase text-2xl font-bold bg-gradient-to-r from-[#34D2A2] to-[#0A3E49] bg-clip-text text-transparent">
+            <h1 className="uppercase text-2xl font-semibold bg-gradient-to-r from-[#34D2A2] to-[#0A3E49] bg-clip-text text-transparent">
               Arqademy
             </h1>
           </div>
