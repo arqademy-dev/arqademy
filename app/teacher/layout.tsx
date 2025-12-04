@@ -13,7 +13,7 @@ export default function TeacherLayout({ children }: TeacherLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen ">
       {/* ✅ Top Navigation */}
       <TopNav onMenuToggle={() => setSidebarOpen(true)} />
 
@@ -25,7 +25,7 @@ export default function TeacherLayout({ children }: TeacherLayoutProps) {
 
       {/* ✅ Main Content */}
       <main className="lg:ml-64 pt-16 min-h-screen">
-        <div className="p-5 sm:p-8">{children}</div>
+        <div className="">{children}</div>
       </main>
     </div>
   );
