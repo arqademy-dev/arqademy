@@ -3,16 +3,14 @@ import { Input } from "../components/ui/Input";
 import { Label } from "../components/ui/Label";
 import { Card } from "../components/ui/Card";
 import { School, Mic } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#34D2A2]/10 via-white to-[#0A3E49]/5 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br bg-[#0A3E49] flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#34D2A2] to-[#0A3E49] p-10 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-4 backdrop-blur-sm">
-            <Mic className="w-12 h-12 text-white" />
-          </div>
           <h1 className="text-4xl font-bold text-white">Arqademy</h1>
           <p className="text-white/80 mt-2 text-lg">Voice-Powered Learning Platform</p>
         </div>
@@ -42,6 +40,12 @@ export default function LoginPage() {
           <Button size="lg" className="w-full text-lg">
             Sign In to Arqademy
           </Button>
+
+          <Link href="/" className="w-full">
+            <Button size="lg" variant="secondary" className="w-full text-sm">
+              Cancle
+            </Button>
+          </Link>
 
           <div className="text-center text-xs text-gray-500 mt-6">
             © 2025 Arqademy • Empowering Teachers & Students

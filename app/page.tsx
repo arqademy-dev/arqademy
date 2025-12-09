@@ -125,20 +125,7 @@ const HomePage = () => {
           <p className="text-white/80">Select your role to access your personalized dashboard</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-          <Link href="/student"            
-            className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
-          >
-            <div className="flex flex-col items-center gap-4">
-              <div className="p-4 bg-blue-100 rounded-full group-hover:bg-blue-200 transition-colors">
-                <GraduationCap className="w-12 h-12 text-blue-600" />
-              </div>
-              <h3 className="text-gray-900">Student Portal</h3>
-              <p className="text-gray-600 text-center">
-                Track your academic projects and monitor your progress
-              </p>
-            </div>
-          </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
 
           <Link
             href="/teacher"
@@ -156,14 +143,14 @@ const HomePage = () => {
           </Link>
 
           <Link
-            href="management"
+            href="admin"
             className="bg-white/95 backdrop-blur-sm p-8 rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105 group"
           >
             <div className="flex flex-col items-center gap-4">
               <div className="p-4 bg-purple-100 rounded-full group-hover:bg-purple-200 transition-colors">
                 <UserCircle className="w-12 h-12 text-purple-600" />
               </div>
-              <h3 className="text-gray-900">Management</h3>
+              <h3 className="text-gray-900">Admin</h3>
               <p className="text-gray-600 text-center">
                 Track all activities
               </p>

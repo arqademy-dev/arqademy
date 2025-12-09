@@ -1,6 +1,7 @@
 import { Bell, Menu, School } from "lucide-react";
 import Logo from '../../../public/images/no_bg_logo.png'
 import Image, { StaticImageData } from 'next/image';
+import Link from "next/link";
 
 interface TopNavProps {
   onMenuToggle: () => void;
@@ -32,6 +33,9 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
         </div>
 
         <div className="flex items-center gap-4">
+          <Link href="/">
+            <button className="bg-red-600 text-white p-1 px-3 rounded-lg border-none font-semibold">Logout</button>
+          </Link>
           <button className="relative p-2 hover:bg-gray-100 rounded-full transition">
             <Bell className="w-6 h-6 text-[#0A3E49]" />
             <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>

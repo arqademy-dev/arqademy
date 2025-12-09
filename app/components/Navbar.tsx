@@ -49,9 +49,11 @@ export default function Navbar({ onGetStarted }: NavbarProps) {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <button className="text-white hover:bg-white/20 px-4 py-2 rounded-lg">
-              Sign In
-            </button>
+            <Link href="/login">
+              <button className="text-white hover:bg-white/20 px-4 py-2 rounded-lg">
+                Sign In
+              </button>
+            </Link>
             {onGetStarted && (
               <button
                 onClick={onGetStarted}
@@ -86,9 +88,11 @@ export default function Navbar({ onGetStarted }: NavbarProps) {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-2 border-t border-white/20">
+              <Link href="/login">
                 <button className="text-white hover:bg-white/20 w-full px-4 py-2 rounded-lg">
-                  Sign In
+                  Login
                 </button>
+              </Link>
                 {onGetStarted && (
                   <button
                     onClick={onGetStarted}

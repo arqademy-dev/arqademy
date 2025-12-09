@@ -79,12 +79,12 @@ export default function TeacherDashboard() {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-white">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#0A3E49]">Welcome back, Sarah!</h1>
-          <p className="text-gray-600 mt-1 text-sm sm:text-base flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold">Welcome back, Sarah!</h1>
+          <p className="text-gray-300 mt-1 text-sm sm:text-base flex items-center gap-2">
             <Calendar className="w-4 h-4" />
             Tuesday, December 02, 2025 • 3/4 sessions done
           </p>
