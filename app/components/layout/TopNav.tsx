@@ -1,30 +1,40 @@
-import { Bell, Menu, School } from "lucide-react";
-import Logo from '../../../public/images/no_bg_logo.png'
-import Image, { StaticImageData } from 'next/image';
+import { Bell, Menu } from "lucide-react";
+import Logo from '../../../public/images/no_bg_logo.png';
+import Image from 'next/image';
 import Link from "next/link";
+import { useAuthStore } from "@/app/stores/useAuthStore";
+import { useRouter } from "next/navigation";
 
 interface TopNavProps {
   onMenuToggle: () => void;
 }
 
-interface ImageProp {
-    src: string | StaticImageData | Blob | undefined; 
-    alt?: string;
-}
-
 export function TopNav({ onMenuToggle }: TopNavProps) {
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    console.log("Logging out user:", user);
+
+    await logout();  // clears sessionStorage and store
+
+    // Redirect to login or home page after logout
+    router.push("/login");  // change to "/" if you want home
+    router.refresh();       // optional: forces re-render if needed
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 shadow-sm">
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-4">
-          {/* ✅ Call toggle function when menu icon is clicked */}
           <button className="lg:hidden" onClick={onMenuToggle}>
             <Menu className="w-6 h-6 text-[#0A3E49]" />
           </button>
 
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center">
-              <Image src={ Logo } alt="ARQADEMY" width={40} height={40} />
+              <Image src={Logo} alt="ARQADEMY" width={40} height={40} />
             </div>
             <h1 className="uppercase text-2xl font-semibold bg-gradient-to-r from-[#34D2A2] to-[#0A3E49] bg-clip-text text-transparent">
               Arqademy
@@ -33,9 +43,13 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/">
-            <button className="bg-red-600 text-white p-1 px-3 rounded-lg border-none font-semibold">Logout</button>
-          </Link>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 cursor-pointer text-white py-2 px-4 rounded-lg font-semibold transition"
+          >
+            Logout
+          </button>
+
           <button className="relative p-2 hover:bg-gray-100 rounded-full transition">
             <Bell className="w-6 h-6 text-[#0A3E49]" />
             <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
