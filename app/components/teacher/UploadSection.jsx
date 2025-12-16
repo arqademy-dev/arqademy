@@ -56,19 +56,19 @@ export default function UploadSection() {
 
   return (
     <>
-      <div className="p-5 sm:p-6 border-2 rounded-2xl">
+      <div className="p-2 sm:p-6 border border-gray-50 rounded-2xl">
         <div className="flex items-center gap-3 mb-5">
           <Upload className="w-6 h-6 text-[#0ECB83]" />
-          <h2 className="text-lg sm:text-xl font-semibold">Upload Lesson</h2>
+          <h2 className="text-lg sm:text-xl font-semibold">Upload</h2>
         </div>
 
         <select
-          className="mb-4 px-4 py-2.5 rounded-xl border border-gray-300 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0ECB83]/30 text-black"
+          className="mb-4 px-4 py-2.5 text-white rounded-xl border border-gray-300 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0ECB83]/30 text-black"
           value={selectedTitle}
           onChange={(e) => setSelectedTitle(e.target.value)}
         >
           {rubrics.map((r) => (
-            <option key={r.id} value={r.title}>
+            <option key={r.id} value={r.title} className="text-black">
               {r.title}
             </option>
           ))}
@@ -78,7 +78,7 @@ export default function UploadSection() {
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
-          className={`border-4 border-dashed rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer ${
+          className={`border-4 border-dashed rounded-2xl p-6 text-center transition-all duration-300 cursor-pointer ${
             isDragging ? "border-[#0ECB83] bg-emerald-50/50 shadow-lg" : "border-gray-300 bg-gray-50"
           }`}
         >

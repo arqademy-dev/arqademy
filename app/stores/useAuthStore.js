@@ -1,68 +1,81 @@
 // stores/useAuthStore.js
 import { create } from "zustand";
-import { supabase } from "../lib/supabaseClient";
 import { toast } from "sonner";
+import { supabase } from "@/app/lib/supabaseClient";
+import Cookies from "js-cookie";
 
-const USER_ID_KEY = "arq_user_id";  // cookie name
+const COOKIE_NAME = "arq_user_id";
+const COOKIE_EXPIRES = 7; // days
 
-export const useAuthStore = create((set, get) => ({
+export const useAuthStore = create((set) => ({
   user: null,
   loading: false,
 
+  // Login
   login: async (email, password) => {
     set({ loading: true });
 
-    const { data: user, error } = await supabase
+    // 1. Find user by email
+    const { data: users, error } = await supabase
       .from("users")
       .select("id, first_name, last_name, email, role, password")
       .eq("email", email.trim())
       .maybeSingle();
 
-    if (error || !user) {
-      toast.error(error?.message || "Email not found");
+    if (error || !users) {
+      toast.error("Email not found");
       set({ loading: false });
       return;
     }
 
-    if (user.password !== password) {
+    // 2. Check password (plain text — upgrade to bcrypt later if needed)
+    if (users.password !== password) {
       toast.error("Incorrect password");
       set({ loading: false });
       return;
     }
 
-    // Store user ID in session cookie
-    sessionStorage.setItem(USER_ID_KEY, user.id);
+    // 3. Store user ID in cookie
+    Cookies.set(COOKIE_NAME, users.id, { expires: COOKIE_EXPIRES, secure: true, sameSite: "strict" });
 
-    const { password: _, ...safeUser } = user;
+    // 4. Remove password from stored user
+    const { password: _, ...safeUser } = users;
 
     set({ user: safeUser, loading: false });
-    toast.success(`Welcome, ${safeUser.first_name || "User"}!`);
+    toast.success(`Welcome back, ${safeUser.first_name || "User"}!`);
   },
 
-  // Restore from cookie on app load
+  // Restore session from cookie
   restoreSession: async () => {
-    const storedId = sessionStorage.getItem(USER_ID_KEY);
-    if (!storedId) return;
-
     set({ loading: true });
+
+    const storedId = Cookies.get(COOKIE_NAME);
+
+    if (!storedId) {
+      set({ user: null, loading: false });
+      return;
+    }
 
     const { data: user, error } = await supabase
       .from("users")
       .select("id, first_name, last_name, email, role")
-      .eq("id", parseInt(storedId))
+      .eq("id", storedId) // UUID — NO PARSE
       .single();
 
-    if (user) {
-      set({ user, loading: false });
-    } else {
-      sessionStorage.removeItem(USER_ID_KEY);
+    if (error || !user) {
+      Cookies.remove(COOKIE_NAME);
       set({ user: null, loading: false });
+      return;
     }
+
+    set({ user, loading: false });
   },
 
+  // Logout
   logout: () => {
-    sessionStorage.removeItem(USER_ID_KEY);
+    Cookies.remove(COOKIE_NAME);
     set({ user: null });
-    toast.success("Logged out");
+    toast.success("Logged out successfully");
+    window.location.href = "/login"; // redirect to login
   },
 }));

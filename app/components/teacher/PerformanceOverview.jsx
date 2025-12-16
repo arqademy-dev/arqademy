@@ -74,7 +74,7 @@ export default function PerformanceOverview() {
                     onClick={() => handleRowClick(analysis)}
                     className="border-t hover:bg-gray-50 cursor-pointer transition-colors"
                   >
-                    <td className="py-4">
+                    <td className="py-4 text-black">
                       {new Date(analysis.created_at).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",

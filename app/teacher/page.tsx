@@ -24,6 +24,8 @@ export default function TeacherDashboard() {
     ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || "Teacher"
     : "Teacher";
 
+    console.log(user)
+
   const todayDate = formatDate();
 
   return (

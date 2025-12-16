@@ -24,11 +24,11 @@ export default function AnalysisResultsModal() {
     <Dialog open={true} onClose={() => setSelectedAnalysis(null)} className="relative z-50">
       <div className="fixed inset-0 bg-black/60" />
 
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
+      <div className="fixed inset-0 flex items-center justify-center p-2">
+        <Dialog.Panel className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-3">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <Dialog.Title className="text-3xl font-bold text-[#0A3E49]">
+              <Dialog.Title className="text-xl font-bold text-[#0A3E49]">
                 Analysis Details
               </Dialog.Title>
               <p className="text-gray-600 mt-2">
@@ -40,15 +40,15 @@ export default function AnalysisResultsModal() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-8">
             {metrics.map((m) => {
               const Icon = m.icon;
               return (
-                <div key={m.label} className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl text-center border border-gray-200">
-                  <Icon className={`w-12 h-12 ${m.color} mx-auto mb-4`} />
-                  <p className="text-gray-700 font-medium">{m.label}</p>
-                  <p className="text-4xl font-bold text-[#0A3E49] mt-2">
-                    {m.value}<span className="text-2xl">%</span>
+                <div key={m.label} className="bg-gradient-to-br from-gray-50 to-white p-2 rounded-2xl text-center border border-gray-200">
+                  <Icon className={`w-6 h-6 ${m.color} mx-auto mb-4`} />
+                  <p className="text-gray-700">{m.label}</p>
+                  <p className="text-xl font-bold text-[#0A3E49] mt-2">
+                    {m.value}<span className="text-xl">%</span>
                   </p>
                 </div>
               );

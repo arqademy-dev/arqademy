@@ -30,3 +30,21 @@ body {
   font-style: normal;
 }
 
+@layer utilities {
+  .animate-ping {
+    animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+

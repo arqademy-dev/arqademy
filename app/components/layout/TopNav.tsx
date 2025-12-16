@@ -27,28 +27,28 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 shadow-sm">
       <div className="flex items-center justify-between h-full px-6">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <button className="lg:hidden" onClick={onMenuToggle}>
             <Menu className="w-6 h-6 text-[#0A3E49]" />
           </button>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center">
-              <Image src={Logo} alt="ARQADEMY" width={40} height={40} />
+          <div className="flex items-center gap-1">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center">
+              <Image src={Logo} alt="ARQADEMY" width={35} height={35} />
             </div>
-            <h1 className="uppercase text-2xl font-semibold bg-gradient-to-r from-[#34D2A2] to-[#0A3E49] bg-clip-text text-transparent">
+            <h1 className="hidden md:flex uppercase text-xl font-semibold bg-gradient-to-r bg-[#0A3E49] bg-clip-text text-transparent">
               Arqademy
             </h1>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <button
+          {/* <button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 cursor-pointer text-white py-2 px-4 rounded-lg font-semibold transition"
           >
             Logout
-          </button>
+          </button> */}
 
           <button className="relative p-2 hover:bg-gray-100 rounded-full transition">
             <Bell className="w-6 h-6 text-[#0A3E49]" />

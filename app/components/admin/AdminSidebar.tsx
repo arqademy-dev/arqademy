@@ -7,6 +7,8 @@ import { Home, Mic, Upload, History, BarChart3, BookOpen, Trophy, Users, LogOut,
 import { useState } from "react";
 import Logo from '../../../public/images/no_bg_logo.png'
 import Image, { StaticImageData } from 'next/image';
+import { useAuthStore } from "@/app/stores/useAuthStore";
+import { useRouter } from "next/navigation";
 
 const menu = [
   { icon: Home, label: "Dashboard", href: "/admin" },
@@ -20,6 +22,19 @@ interface SidebarProps {
 
 export function AdminSidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
+    const router = useRouter();
+
+    const handleLogout = async () => {
+      console.log("Logging out user:", user);
+
+      await logout();  // clears sessionStorage and store
+
+      // Redirect to login or home page after logout
+      router.push("/login");  // change to "/" if you want home
+      router.refresh();       // optional: forces re-render if needed
+    };
 
   return (
     <>
@@ -58,7 +73,7 @@ export function AdminSidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-          <button className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 w-full text-sm">
+          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 w-full text-sm">
             <LogOut className="w-5 h-5" />
             <span>Logout</span>
           </button>
