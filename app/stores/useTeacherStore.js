@@ -9,6 +9,7 @@ import {
   getFinalEvaluation,
 } from "@/app/api/fastapi";
 import { supabase } from "@/app/lib/supabaseClient";
+import Cookies from "js-cookie";
 
 const BASE_PROGRESS = {
   isProcessing: false,
@@ -20,27 +21,49 @@ export const useTeacherStore = create((set, get) => ({
   user: null,
   loading: false,
   processing: BASE_PROGRESS,
-  latestAnalysis: null,
-  analyses: [],
   selectedAnalysis: null,
+  analyses: [],
 
-  startAnalysisPipeline: async (audioFile, curriculum_id) => {
-    const storedId = sessionStorage.getItem("arq_user_id");
-    if (!storedId) {
-      toast.error("You must be logged in");
-      return;
-    }
-
-    const teacher_id = storedId;
-
+  // Main analysis pipeline — supports both teacher and admin upload
+  startAnalysisPipeline: async (audioFile, curriculum_id, adminTeacherId = null) => {
     set({
-      processing: { isProcessing: true, progress: 0, stage: "Starting upload..." },
+      processing: { isProcessing: true, progress: 0, stage: "Preparing..." },
     });
 
-    let file_id, transcribeRes, metricsRes;
+    let teacher_id;
 
     try {
-      // 1. Upload
+      // Determine teacher_id
+      if (adminTeacherId) {
+        // Admin uploading for a specific teacher
+        teacher_id = adminTeacherId;
+      } else {
+        // Teacher uploading themselves
+        const storedUserId = Cookies.get("arq_user_id");
+        if (!storedUserId) {
+          toast.error("You must be logged in");
+          set({ processing: BASE_PROGRESS });
+          return;
+        }
+
+        const { data: teacherRecord, error } = await supabase
+          .from("teachers")
+          .select("id")
+          .eq("user_id", parseInt(storedUserId))
+          .single();
+
+        if (error || !teacherRecord) {
+          toast.error("Teacher profile not found");
+          set({ processing: BASE_PROGRESS });
+          return;
+        }
+
+        teacher_id = teacherRecord.id;
+      }
+
+      let file_id, transcribeRes, metricsRes;
+
+      // 1. Upload audio
       set({ processing: { isProcessing: true, progress: 10, stage: "Uploading audio..." } });
       file_id = await uploadAudio(audioFile, teacher_id, curriculum_id);
       set({ processing: { isProcessing: true, progress: 15, stage: "Upload complete" } });
@@ -48,9 +71,8 @@ export const useTeacherStore = create((set, get) => ({
       // 2. Transcribe
       set({ processing: { isProcessing: true, progress: 25, stage: "Transcribing audio..." } });
       transcribeRes = await transcribeAudio(file_id);
-      console.log("Transcribe Response:", transcribeRes);
 
-      // Save transcription directly
+      // Save transcription
       try {
         const { data: existing } = await supabase
           .from("analysis")
@@ -75,9 +97,8 @@ export const useTeacherStore = create((set, get) => ({
             ...transcribeData,
           });
         }
-        console.log("Saved transcribe to DB directly");
       } catch (err) {
-        console.error("Failed to save transcribe:", err);
+        console.error("Failed to save transcription:", err);
       }
 
       set({ processing: { isProcessing: true, progress: 40, stage: "Transcription complete" } });
@@ -90,7 +111,7 @@ export const useTeacherStore = create((set, get) => ({
 
       // 4. Evaluate Text
       set({ processing: { isProcessing: true, progress: 70, stage: "Evaluating lesson content..." } });
-      const evalTextRes = await evaluateText(transcribeRes.text, curriculum_id); // Fixed: removed extra teacher_id
+      const evalTextRes = await evaluateText(transcribeRes.text, curriculum_id);
       await get().saveToAnalysis(file_id, { evaluate_text: evalTextRes }, teacher_id, curriculum_id);
       set({ processing: { isProcessing: true, progress: 80, stage: "Content evaluation complete" } });
 
@@ -109,33 +130,34 @@ export const useTeacherStore = create((set, get) => ({
         audio_metrics: metricsRes,
       });
       await get().saveToAnalysis(file_id, { final_evaluation: finalRes }, teacher_id, curriculum_id);
-      set({ processing: { isProcessing: true, progress: 100, stage: "All done!" } });
+      set({ processing: { isProcessing: true, progress: 100, stage: "Analysis complete!" } });
 
       toast.success("Lesson analysis complete!");
 
-    // Open modal
-    set({
-    selectedAnalysis: {
-        final_evaluation: finalRes,
-        created_at: new Date().toISOString(),
-        rubric_id: curriculum_id,
-        file_id,
-    },
-    });
+      // Show results in modal
+      set({
+        selectedAnalysis: {
+          final_evaluation: finalRes,
+          created_at: new Date().toISOString(),
+          rubric_id: curriculum_id,
+          file_id,
+          teacher_id,
+        },
+      });
 
-    // Re-fetch full history so PerformanceOverview updates immediately
-    const { data: updatedAnalyses } = await supabase
-    .from("analysis")
-    .select("*")
-    .eq("teacher_id", teacher_id)
-    .order("created_at", { ascending: false });
+      // Refresh analysis history
+      const { data: updatedAnalyses } = await supabase
+        .from("analysis")
+        .select("*")
+        .eq("teacher_id", teacher_id)
+        .order("created_at", { ascending: false });
 
-    set({ analyses: updatedAnalyses || [] });
+      set({ analyses: updatedAnalyses || [] });
 
     } catch (err) {
       console.error("Pipeline error:", err);
       toast.error(err.message || "Analysis failed");
-      set({ processing: { isProcessing: true, progress: 0, stage: "Error occurred" } });
+      set({ processing: BASE_PROGRESS });
     } finally {
       setTimeout(() => {
         set({ processing: BASE_PROGRESS });
@@ -144,8 +166,6 @@ export const useTeacherStore = create((set, get) => ({
   },
 
   setSelectedAnalysis: (analysis) => set({ selectedAnalysis: analysis }),
-
-  setAnalyses: (analyses) => set({ analyses }),
 
   saveToAnalysis: async (file_id, data, teacher_id, curriculum_id = null) => {
     try {

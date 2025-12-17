@@ -11,14 +11,14 @@ export const useAuthStore = create((set) => ({
   user: null,
   loading: false,
 
+  
   // Login
   login: async (email, password) => {
     set({ loading: true });
 
-    // 1. Find user by email
     const { data: users, error } = await supabase
       .from("users")
-      .select("id, first_name, last_name, email, role, password")
+      .select("id, first_name, last_name, email, role, password, can_login")
       .eq("email", email.trim())
       .maybeSingle();
 
@@ -28,17 +28,23 @@ export const useAuthStore = create((set) => ({
       return;
     }
 
-    // 2. Check password (plain text — upgrade to bcrypt later if needed)
+    // Check if login is allowed
+    if (!users.can_login) {
+      toast.error("Your account is disabled. Contact admin.");
+      set({ loading: false });
+      return;
+    }
+
+    // Check password
     if (users.password !== password) {
       toast.error("Incorrect password");
       set({ loading: false });
       return;
     }
 
-    // 3. Store user ID in cookie
+    // Store cookie and user
     Cookies.set(COOKIE_NAME, users.id, { expires: COOKIE_EXPIRES, secure: true, sameSite: "strict" });
 
-    // 4. Remove password from stored user
     const { password: _, ...safeUser } = users;
 
     set({ user: safeUser, loading: false });

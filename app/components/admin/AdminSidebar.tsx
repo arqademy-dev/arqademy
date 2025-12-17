@@ -12,7 +12,8 @@ import { useRouter } from "next/navigation";
 
 const menu = [
   { icon: Home, label: "Dashboard", href: "/admin" },
-  // { icon: Users, label: "Students", href: "/Admin/students" },
+  { icon: Users, label: "Users/Settings", href: "/admin/settings" },
+  { icon: BarChart3, label: "Schools", href: "/admin/management" },
 ];
 
 interface SidebarProps {
