@@ -63,7 +63,7 @@ export default function UploadSection() {
         </div>
 
         <select
-          className="mb-4 px-4 py-2.5 text-white rounded-xl border border-gray-300 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0ECB83]/30 text-black"
+          className="mb-4 px-4 py-2.5 rounded-xl border border-gray-300 w-full text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#0ECB83]/30 text-black"
           value={selectedTitle}
           onChange={(e) => setSelectedTitle(e.target.value)}
         >

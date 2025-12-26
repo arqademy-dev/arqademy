@@ -35,6 +35,7 @@ export const getAudioMetrics = async (file_id) => {
     const response = await api.post(`/audio-metrics/${file_id}`, {file_id});
     return response.data; // full metrics object
   } catch (error) {
+    console.error("getAudioMetrics error:", error);
     throw new Error(error.response?.data?.detail || "Audio metrics failed");
   }
 };

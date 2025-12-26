@@ -49,8 +49,10 @@ export const useTeacherStore = create((set, get) => ({
         const { data: teacherRecord, error } = await supabase
           .from("teachers")
           .select("id")
-          .eq("user_id", parseInt(storedUserId))
+          .eq("user_id", storedUserId)
           .single();
+        
+        console.log("teacherRecord", teacherRecord);
 
         if (error || !teacherRecord) {
           toast.error("Teacher profile not found");

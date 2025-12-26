@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/stores/useAuthStore.js", "app/login/page.jsx", "app/teacher/page.jsx", "app/super-admin/page.tsx", "app/admin/page.jsx"  ],
+, "app/stores/useAuthStore.js", "app/login/page.jsx", "app/teacher/page.jsx", "app/super-admin/page.tsx", "app/admin/page.jsx", "app/teacher/students/page.jsx"  ],
   "exclude": ["node_modules"]
 }

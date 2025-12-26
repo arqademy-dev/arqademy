@@ -46,24 +46,33 @@ export const useAdminStore = create((set, get) => ({
     set({ loading: false });
   },
 
-  fetchStudents: async () => {
-    set({ loading: true });
-    const { data, error } = await supabase
-      .from("students")
-      .select(`
-        *,
-        classes (class_name),
-        schools (school_name)
-      `)
-      .order("created_at", { ascending: false });
-    if (error) {
-      toast.error("Failed to load students");
-      set({ students: data || [] });
-    } else {
-      set({ students: data || [] });
-    }
-    set({ loading: false });
-  },
+fetchStudents: async () => {
+  const { data, error } = await supabase
+    .from("students")
+    .select(`
+      *,
+      classes (class_name),
+      schools (school_name),
+      student_projects (
+        role,
+        projects (
+          id,
+          title,
+          description,
+          project_date
+        )
+      )
+    `)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    toast.error("Failed to load students");
+    console.error(error);
+  } else {
+    set({ students: data || [] });
+  }
+  set({ loading: false });
+},
 
   viewTeacherDetails: async (teacherId) => {
     set({ loading: true });

@@ -11,6 +11,31 @@ export const useAuthStore = create((set) => ({
   user: null,
   loading: false,
 
+  //getUser info 
+  getUser: async () => {
+
+    const userId = Cookies.get(COOKIE_NAME);
+
+    if (!userId) {
+      set({ user: null, loading: false });
+      return;
+    }
+
+    set({ loading: true }); 
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("id, first_name, last_name, email, role")
+      .eq("id", userId)
+      .single();  
+    if (error || !user) {
+      toast.error("Failed to fetch user info");
+      set({ loading: false });
+      return null;
+    }
+    set({ loading: false });
+    return user;
+  },
+
   
   // Login
   login: async (email, password) => {
@@ -69,7 +94,7 @@ export const useAuthStore = create((set) => ({
       .single();
 
     if (error || !user) {
-      Cookies.remove(COOKIE_NAME);
+      Cookies.remove(COOKIE_NAME);  
       set({ user: null, loading: false });
       return;
     }

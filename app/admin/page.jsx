@@ -21,8 +21,8 @@ const Card = ({ children, className = "", onClick }) => (
 export default function AdminDashboard() {
   const {
     schools,
-    teachers,
-    students,
+    teachers: allTeachers,
+    students: allStudents,
     selectedTeacher,
     selectedStudent,
     selectedSchool,
@@ -38,7 +38,8 @@ export default function AdminDashboard() {
 
   const [activeTab, setActiveTab] = useState("teachers");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedSchoolState, setSelectedSchoolState] = useState(schools[0] || null);
+  const [selectedSchoolState, setSelectedSchoolState] = useState(null);
+
   const [uploadedFile, setUploadedFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -46,22 +47,26 @@ export default function AdminDashboard() {
     loadAdminData();
   }, [loadAdminData]);
 
+  // Auto-select first school on load
   useEffect(() => {
     if (schools.length > 0 && !selectedSchoolState) {
       setSelectedSchoolState(schools[0]);
     }
   }, [schools]);
 
-  const handleTeacherClick = (teacher) => {
-    viewTeacherDetails(teacher.id);
-  };
+  // Filtered lists
+  const teachers = selectedSchoolState
+    ? allTeachers.filter(t => t.school_id === selectedSchoolState.id)
+    : allTeachers;
 
-  const handleStudentClick = (student) => {
-    viewStudentDetails(student.id);
-  };
+  const students = selectedSchoolState
+    ? allStudents.filter(s => s.school_id === selectedSchoolState.id)
+    : allStudents;
 
+  const handleTeacherClick = (teacher) => viewTeacherDetails(teacher.id);
+  const handleStudentClick = (student) => viewStudentDetails(student.id);
   const handleSchoolClick = (school) => {
-    viewSchoolDetails(school.id);
+    setSelectedSchoolState(school);
     setIsDropdownOpen(false);
   };
 
@@ -111,6 +116,7 @@ export default function AdminDashboard() {
                 <span className="hidden sm:inline">Print Report</span>
               </button>
 
+              {/* School Selector */}
               <div className="relative flex-1 sm:flex-initial">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -128,20 +134,17 @@ export default function AdminDashboard() {
                 </button>
 
                 {isDropdownOpen && (
-                  <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+                  <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50 max-h-64 overflow-y-auto">
                     {schools.map((school) => (
                       <button
                         key={school.id}
-                        onClick={() => {
-                          setSelectedSchoolState(school);
-                          handleSchoolClick(school);
-                        }}
+                        onClick={() => handleSchoolClick(school)}
                         className={`w-full text-left px-4 py-3 text-sm hover:bg-[#34D2A2] hover:bg-opacity-10 transition ${
-                          selectedSchoolState?.id === school.id ? "bg-[#34D2A2] bg-opacity-10" : ""
+                          selectedSchoolState?.id === school.id ? "bg-[#34D2A2] bg-opacity-10 font-medium" : ""
                         }`}
                       >
                         <p className="font-medium text-gray-900">{school.school_name}</p>
-                        <p className="text-xs text-gray-500">{school.address || "—"}</p>
+                        <p className="text-xs text-gray-500">{school.address || "No address"}</p>
                       </button>
                     ))}
                   </div>
@@ -178,7 +181,6 @@ export default function AdminDashboard() {
 
       {/* Tab Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Teachers Tab */}
         {activeTab === "teachers" && (
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -187,45 +189,52 @@ export default function AdminDashboard() {
             </div>
 
             <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-              {teachers.map((teacher) => (
-                <Card 
-                  key={teacher.id} 
-                  className="p-4 hover:shadow-md hover:border-[#34D2A2] transition cursor-pointer"
-                  onClick={() => handleTeacherClick(teacher)}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="w-12 h-12 rounded-lg bg-[#34D2A2] bg-opacity-10 flex items-center justify-center flex-shrink-0">
-                        <GraduationCap className="w-6 h-6 text-[#0A3E49]" />
+              {teachers.length === 0 ? (
+                <p className="text-center text-gray-500 py-8">No teachers in this school</p>
+              ) : (
+                teachers.map((teacher) => (
+                  <Card 
+                    key={teacher.id} 
+                    className="p-4 hover:shadow-md hover:border-[#34D2A2] transition cursor-pointer"
+                    onClick={() => handleTeacherClick(teacher)}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="w-12 h-12 rounded-lg bg-[#34D2A2] bg-opacity-10 flex items-center justify-center flex-shrink-0">
+                          <GraduationCap className="w-6 h-6 text-[#0A3E49]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-gray-900 truncate">
+                            {teacher.first_name} {teacher.last_name}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {teacher.schools?.school_name || "No school"}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">
-                          {teacher.first_name} {teacher.last_name}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {teacher.schools?.school_name || "No school"}
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="flex items-center gap-6">
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-gray-900">—</p>
-                        <p className="text-xs text-gray-500">Students</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-[#34D2A2]">—</p>
-                        <p className="text-xs text-gray-500">Performance</p>
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <p className="text-lg font-semibold text-gray-900">—</p>
+                          <p className="text-xs text-gray-500">Students</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-lg font-semibold text-[#34D2A2]">—</p>
+                          <p className="text-xs text-gray-500">Performance</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-lg font-semibold text-gray-900">—</p>
+                          <p className="text-xs text-gray-500">Sessions</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         )}
 
-        {/* Students Tab */}
         {activeTab === "students" && (
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -233,50 +242,65 @@ export default function AdminDashboard() {
               <span className="text-sm text-gray-500">{students.length} total</span>
             </div>
 
-            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-              {students.map((student) => (
-                <Card 
-                  key={student.id} 
-                  className="p-4 hover:shadow-md hover:border-[#34D2A2] transition cursor-pointer"
-                  onClick={() => handleStudentClick(student)}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 font-semibold flex-shrink-0">
-                        {student.first_name[0]}{student.last_name[0]}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {students.length === 0 ? (
+                <p className="text-center text-gray-500 py-8 col-span-full">No students found</p>
+              ) : (
+                students.map((student) => (
+                  <Card key={student.id} className="overflow-hidden hover:shadow-lg transition">
+                    {/* Profile Header */}
+                    <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-center">
+                      <div className="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-md">
+                        <span className="text-3xl font-bold text-purple-600">
+                          {student.first_name[0]}{student.last_name[0]}
+                        </span>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">
-                          {student.first_name} {student.last_name}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {student.classes?.class_name || "No class"} • {student.schools?.school_name || "No school"}
-                        </p>
-                      </div>
+                      <h3 className="mt-4 text-xl font-semibold text-white">
+                        {student.first_name} {student.last_name}
+                      </h3>
+                      <p className="text-purple-200 text-sm mt-1">
+                        {student.classes?.class_name || "No class"} • {student.schools?.school_name || "No school"}
+                      </p>
                     </div>
 
-                    <div className="flex items-center gap-6">
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-[#34D2A2]">—</p>
-                        <p className="text-xs text-gray-500">Engagement</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-gray-900">—</p>
-                        <p className="text-xs text-gray-500">Tasks</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-lg font-semibold text-orange-600">—</p>
-                        <p className="text-xs text-gray-500">Streak</p>
-                      </div>
+                    {/* Projects Section */}
+                    <div className="p-6">
+                      <h4 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <BookOpen className="w-5 h-5 text-purple-600" />
+                        Projects Involved In
+                      </h4>
+
+                      {student.student_projects?.length > 0 ? (
+                        <div className="space-y-4">
+                          {student.student_projects.map((sp) => {
+                            const proj = sp.projects;
+                            return (
+                              <div key={sp.id} className="border-l-4 border-purple-500 pl-4">
+                                <p className="font-medium text-gray-900">{proj.title}</p>
+                                <p className="text-sm text-gray-600">{proj.description || "No description"}</p>
+                                <div className="mt-2 flex items-center gap-3 text-sm">
+                                  <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                    Role: {sp.role}
+                                  </span>
+                                  <span className="text-gray-500">
+                                    {new Date(proj.project_date).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <p className="text-center text-gray-500 py-4">No projects yet</p>
+                      )}
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         )}
 
-        {/* Summary Tab */}
         {activeTab === "summary" && (
           <div>
             <h2 className="text-lg font-medium text-gray-900 mb-4">School Summary</h2>
@@ -331,7 +355,7 @@ export default function AdminDashboard() {
               </Card>
             </div>
 
-            {/* Performance by Subject (placeholder) */}
+            {/* Performance by Subject */}
             <Card className="p-5">
               <h3 className="text-base font-medium text-gray-900 mb-4">Performance by Subject</h3>
               <div className="space-y-3">
