@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FileAudio, Upload, X, TrendingUp } from "lucide-react";
 import { useTeacherStore } from "@/app/stores/useTeacherStore";
-import { getSupabase } from "@/app/lib/supabaseClient";
+import { supabase } from "@/app/lib/supabaseClient";
 import { toast } from "sonner";
 
 export default function TeacherAnalysisModal({ teacherId }) {
@@ -20,7 +20,6 @@ export default function TeacherAnalysisModal({ teacherId }) {
   useEffect(() => {
     console.log("teacherId", teacherId);    
     const fetchAnalyses = async () => {
-      const supabase = getSupabase();
       const { data, error } = await supabase
         .from("analysis")
         .select("*")

@@ -6,7 +6,7 @@ import { Input } from "@/app/components/ui/Input";
 import { Label } from "@/app/components/ui/Label";
 import { Card } from "@/app/components/ui/Card";
 import { toast } from "sonner";
-import { getSupabase } from "@/app/lib/supabaseClient";
+import { supabase } from "@/app/lib/supabaseClient";
 
 const ROLES = ["teacher", "admin", "super-admin"];
 
@@ -35,7 +35,6 @@ export default function SettingsPage() {
   }, []);
 
   const fetchData = async () => {
-    const supabase = getSupabase();
     setLoading(true);
 
     // Fetch all users (for list)
@@ -62,7 +61,6 @@ export default function SettingsPage() {
 
   // Add completely new user
   const handleAddUser = async () => {
-    const supabase = getSupabase();
     if (!newUser.email || !newUser.password) {
       toast.error("Email and password are required");
       return;
@@ -102,7 +100,6 @@ export default function SettingsPage() {
 
   // Promote existing teacher
   const handlePromoteTeacher = async () => {
-    const supabase = getSupabase();
     if (!selectedTeacherId || !promotePassword) {
       toast.error("Select teacher and password");
       return;

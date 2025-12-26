@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getSupabase } from "@/app/lib/supabaseClient";
+import { supabase } from "@/app/lib/supabaseClient";
 import { toast } from "sonner";
 
 export const useAdminStore = create((set, get) => ({
@@ -14,7 +14,6 @@ export const useAdminStore = create((set, get) => ({
   loading: false,
 
   fetchSchools: async () => {
-    const supabase = getSupabase();
     set({ loading: true });
     const { data, error } = await supabase
       .from("schools")
@@ -30,7 +29,6 @@ export const useAdminStore = create((set, get) => ({
   },
 
   fetchTeachers: async () => {
-    const supabase = getSupabase();
     set({ loading: true });
     const { data, error } = await supabase
       .from("teachers")
@@ -49,7 +47,6 @@ export const useAdminStore = create((set, get) => ({
   },
 
   fetchStudents: async () => {
-    const supabase = getSupabase();
     set({ loading: true });
     const { data, error } = await supabase
       .from("students")
