@@ -6,7 +6,7 @@ import { Input } from "@/app/components/ui/Input";
 import { Label } from "@/app/components/ui/Label";
 import { Card } from "@/app/components/ui/Card";
 import { toast } from "sonner";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabase } from "@/app/lib/supabaseClient";
 import { X, Plus, Edit, Trash2 } from "lucide-react";
 
 const TABS = [
@@ -49,11 +49,13 @@ export default function ManagementPage() {
   };
 
   const fetchSchools = async () => {
+    const supabase = getSupabase();
     const { data } = await supabase.from("schools").select("*").order("school_name");
     setSchools(data || []);
   };
 
   const fetchTeachers = async () => {
+    const supabase = getSupabase();
     const { data } = await supabase
       .from("teachers")
       .select("*, schools(school_name)")
@@ -62,6 +64,7 @@ export default function ManagementPage() {
   };
 
   const fetchStudents = async () => {
+    const supabase = getSupabase();
     const { data } = await supabase
       .from("students")
       .select("*, classes(class_name), schools(school_name)")
@@ -70,16 +73,19 @@ export default function ManagementPage() {
   };
 
   const fetchSubjects = async () => {
+    const supabase = getSupabase();
     const { data } = await supabase.from("subjects").select("*").order("subject_name");
     setSubjects(data || []);
   };
 
   const fetchClasses = async () => {
+    const supabase = getSupabase();
     const { data } = await supabase.from("classes").select("*").order("class_name");
     setClasses(data || []);
   };
 
   const handleAddOrEdit = async () => {
+    const supabase = getSupabase();
     let table;
     let payload = { ...formData };
 
@@ -134,6 +140,7 @@ export default function ManagementPage() {
   };
 
   const handleDelete = async (id) => {
+    const supabase = getSupabase();
     if (!confirm("Are you sure you want to delete?")) return;
 
     const table = activeTab;

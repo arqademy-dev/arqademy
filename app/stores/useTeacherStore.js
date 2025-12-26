@@ -8,7 +8,7 @@ import {
   evaluateAudio,
   getFinalEvaluation,
 } from "@/app/api/fastapi";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabase } from "@/app/lib/supabaseClient";
 import Cookies from "js-cookie";
 
 const BASE_PROGRESS = {
@@ -26,6 +26,7 @@ export const useTeacherStore = create((set, get) => ({
 
   // Main analysis pipeline — supports both teacher and admin upload
   startAnalysisPipeline: async (audioFile, curriculum_id, adminTeacherId = null) => {
+    const supabase = getSupabase();
     set({
       processing: { isProcessing: true, progress: 0, stage: "Preparing..." },
     });
@@ -168,6 +169,7 @@ export const useTeacherStore = create((set, get) => ({
   setSelectedAnalysis: (analysis) => set({ selectedAnalysis: analysis }),
 
   saveToAnalysis: async (file_id, data, teacher_id, curriculum_id = null) => {
+    const supabase = getSupabase();
     try {
       const { data: existing } = await supabase
         .from("analysis")

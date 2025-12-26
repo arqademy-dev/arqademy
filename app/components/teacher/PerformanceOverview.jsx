@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Calendar } from "lucide-react";
 import { useTeacherStore } from "@/app/stores/useTeacherStore";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabase } from "@/app/lib/supabaseClient";
 
 export default function PerformanceOverview() {
   const { analyses, setAnalyses, setSelectedAnalysis } = useTeacherStore();
@@ -11,6 +11,7 @@ export default function PerformanceOverview() {
   // Fetch analysis history from Supabase
   useEffect(() => {
     const fetchAnalyses = async () => {
+      const supabase = getSupabase();
       const storedId = sessionStorage.getItem("arq_user_id");
       if (!storedId) return;
 

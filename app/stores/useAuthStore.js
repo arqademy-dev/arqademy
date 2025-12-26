@@ -1,7 +1,7 @@
 // stores/useAuthStore.js
 import { create } from "zustand";
 import { toast } from "sonner";
-import { supabase } from "@/app/lib/supabaseClient";
+import { getSupabase } from "@/app/lib/supabaseClient";
 import Cookies from "js-cookie";
 
 const COOKIE_NAME = "arq_user_id";
@@ -14,6 +14,7 @@ export const useAuthStore = create((set) => ({
   
   // Login
   login: async (email, password) => {
+    const supabase = getSupabase();
     set({ loading: true });
 
     const { data: users, error } = await supabase
@@ -53,6 +54,7 @@ export const useAuthStore = create((set) => ({
 
   // Restore session from cookie
   restoreSession: async () => {
+    const supabase = getSupabase();
     set({ loading: true });
 
     const storedId = Cookies.get(COOKIE_NAME);
