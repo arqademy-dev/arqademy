@@ -123,3 +123,204 @@ body {
   }
 }
 
+/* ====================== ARQADEMY PROGRAMS SECTION - EXACT MATCH ====================== */
+.arq-landing {
+  --teal: #009E8E;
+  --teal-light: #E6F7F5;
+  --navy: #0D1B2A;
+  --text: #1A2332;
+  --muted: #6B7A8D;
+  --border: #E4E9F0;
+  --surface: #F7F9FC;
+  --card: #FFFFFF;
+  --open: #00A870;
+  --open-bg: #E6F7EF;
+  --soon-bg: #FFF3E6;
+  --soon: #D97706;
+  --enroll-blue: #1A56DB;
+  --install-green: #00A870;
+}
+
+.arq-landing {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+.arq-landing .font-syne {
+  font-family: 'Syne', system-ui, sans-serif;
+}
+
+/* All original classes from your HTML */
+.arq-landing .prog-card {
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: box-shadow .2s, transform .2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.arq-landing .prog-card:hover {
+  box-shadow: 0 10px 36px rgba(0,0,0,0.10);
+  transform: translateY(-3px);
+}
+
+.arq-landing .card-photo {
+  height: 170px;
+  position: relative;
+  overflow: hidden;
+}
+
+.arq-landing .card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s;
+}
+
+.arq-landing .prog-card:hover .card-photo img {
+  transform: scale(1.04);
+}
+
+.arq-landing .card-photo.p-teal { background: linear-gradient(135deg, #004D44, #009E8E); }
+.arq-landing .card-photo.p-amber { background: linear-gradient(135deg, #7A3B00, #D97706); }
+.arq-landing .card-photo.p-slate { background: linear-gradient(135deg, #1A2A3A, #2D4A6A); }
+.arq-landing .card-photo.p-green { background: linear-gradient(135deg, #003320, #00704A); }
+.arq-landing .card-photo.p-blue { background: linear-gradient(135deg, #0A1628, #1A4080); }
+.arq-landing .card-photo.p-rust { background: linear-gradient(135deg, #4A1500, #B94020); }
+
+.arq-landing .status-pill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.arq-landing .pill-open { background: var(--open-bg); color: var(--open); }
+.arq-landing .pill-soon { background: var(--soon-bg); color: var(--soon); }
+
+.arq-landing .card-body {
+  padding: 18px 18px 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.arq-landing .card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 7px;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+}
+
+.arq-landing .card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.arq-landing .card-action {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.arq-landing .btn-enroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #EFF4FF;
+  color: var(--enroll-blue);
+  border: 1px solid #C3D2F7;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: background .15s;
+}
+
+.arq-landing .btn-enroll:hover { background: #DBE5FF; }
+
+.arq-landing .btn-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--open-bg);
+  color: var(--install-green);
+  border: 1px solid #A3D9C0;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: background .15s;
+}
+
+.arq-landing .btn-install:hover { background: #C2ECD8; }
+
+/* Sidebar exact styles */
+.arq-landing .sidebar-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--teal-light);
+  color: var(--teal);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  font-family: 'Manrope', sans-serif;
+  text-align: left;
+}
+
+.arq-landing .sidebar-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.arq-landing .sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: 'Manrope', sans-serif;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.arq-landing .sidebar-item:last-child { border-bottom: none; }
+
+.arq-landing .sidebar-item.active {
+  color: var(--teal);
+  font-weight: 700;
+}
