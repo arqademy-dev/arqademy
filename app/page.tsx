@@ -1,47 +1,29 @@
-'use client';
+// app/page.tsx
+"use client";
 
-import { useState } from 'react';
-import HeroSection from './components/Hero';
-import { Button } from './components/ui/Button';
-import ProgramsSection from './components/ProgramsSection';
-import CommunitySupport from './components/CommunitySupport';
-import Link from 'next/link';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import {
-  Users,
-  UserCircle,
-  ArrowRight,
-  CheckCircle,
-} from 'lucide-react';
+import { useState } from "react";
+import Navbar from "@/app/components/Navbar";
+import HeroSection from "@/app/components/HeroSection";
+import ProgramsSection from "@/app/components/ProgramsSection";
+import Footer from "@/app/components/Footer";
+import ModalManager, { ModalType } from "@/app/components/ModalManager";
 
-const HomePage = () => {
-  const [showRoleSelection, setShowRoleSelection] = useState<boolean>(false);
+export default function Home() {
+  const [modal, setModal] = useState<ModalType>(null);
+  const [modalLabel, setModalLabel] = useState<string | undefined>();
 
-  const scrollToRoles = () => {
-    setShowRoleSelection(true);
-    setTimeout(() => {
-      document
-        .getElementById('role-selection')
-        ?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
+  function openModal(type: ModalType, label?: string) {
+    setModalLabel(label);
+    setModal(type);
+  }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <>
       <Navbar />
-
       <HeroSection />
-
-
-      <ProgramsSection />
-
-      <CommunitySupport />
-
-
+      <ProgramsSection onOpenModal={openModal} />
       <Footer />
-    </div>
+      <ModalManager open={modal} label={modalLabel} onClose={() => setModal(null)} />
+    </>
   );
-};
-
-export default HomePage;
+}
