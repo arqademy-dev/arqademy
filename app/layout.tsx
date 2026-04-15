@@ -35,7 +35,7 @@ export default function RootLayout({
   useEffect(() => {
     if (loading) return;
 
-    const publicRoutes = ['/', '/login'];
+    const publicRoutes = ['/', '/login', '/admin_section_2'];
 
     if (!user && publicRoutes.includes(pathname)) {
       return;
